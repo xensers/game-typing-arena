@@ -1,0 +1,102 @@
+*
+{
+    box-sizing: border-box;
+
+    animation-fill-mode: both;
+}
+
+html,
+body
+{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+
+    background-color: $color-light;
+
+    margin: 0;
+    padding: 0;
+
+    @include respond-to('small')
+    {
+        font-size: 12px;
+    }
+    @include respond-from(FHD)
+    {
+        font-size: 24px;
+    };
+    @include respond-from(QHD)
+    {
+        font-size: 32px;
+    };
+    @include respond-from(UHD)
+    {
+        font-size: 48px;
+    };
+}
+
+section
+{
+    padding: 3.75rem 1rem;
+}
+
+
+h1,
+.h1
+{
+    font-size: 3.75rem;
+    font-weight: bold;
+    line-height: 1.1;
+
+    margin: 1rem auto;
+
+    color: #000;
+
+    @include respond-to('small')
+    {
+        font-size: 3rem;
+    }
+}
+
+h2,
+.h2
+{
+    font-size: 3.5rem;
+    font-weight: bold;
+    line-height: 1.1;
+
+    margin: 1rem auto;
+
+    color: #000;
+
+    @include respond-to('small')
+    {
+        font-size: 3rem;
+    }
+}
+
+h4,
+.h4
+{
+
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 1.28;
+      letter-spacing: 0.01875rem;
+      color: #000;
+
+      @include respond-to('small')
+      {
+          font-size: 1.5rem;
+      }
+
+}
+
+img,
+.icon
+{
+    display: inline-block;
+
+    max-width: 100%;
+
+    vertical-align: middle;
+}

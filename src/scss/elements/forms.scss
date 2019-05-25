@@ -1,0 +1,38 @@
+input,
+textarea
+{
+    font-size: 1rem;
+
+    display: block;
+
+    width: 100%;
+    margin: .75rem;
+    padding: 1.125rem;
+
+    border: solid 1px #f0f4f8;
+    border-radius: 7px;
+    background: #f9fafb;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+input
+{
+    &:focus::placeholder
+    {
+        transition: text-indent .3s ease, opacity .3s ease;
+        text-indent: 20rem;
+
+        opacity: 0;
+    }
+}
+
+textarea
+{
+    &:focus::placeholder
+    {
+        transition: opacity .3s ease;
+
+        opacity: 0;
+    }
+}

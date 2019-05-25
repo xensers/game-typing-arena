@@ -1,0 +1,60 @@
+include helpers/bemto.pug
+
+block vars
+  -
+    var siteTitle = typeof title !== 'undefined' ? title : 'Site Title'
+    var pageTitle = typeof title !== 'undefined' ? title : ''
+  -
+    var html = {
+      attrs: {
+        lang: 'ru'
+      },
+      classList: []
+    }
+  -
+    var body = {
+      attrs: {},
+      classList: []
+    }
+  -
+    var layout = {
+      attrs: {},
+      classList: []
+    }
+
+doctype html
+html(class=html.classList)&attributes(html.attrs)
+  head
+    block head-start
+    block meta
+      meta(charset='UTF-8')
+      meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+      - var headPageTitle = pageTitle !== '' ? ('- ' + pageTitle) : '';
+      title #{siteTitle} #{headPageTitle}
+
+    block styles
+      link(rel='stylesheet', href='assets/css/base.css')
+      link(rel='stylesheet', href='assets/css/layout.css')
+    block head-end
+      script.
+        var readyjs = new Array();
+
+  body(class=body.classList)&attributes(body.attrs)
+    #top
+    block body-start
+
+    include layout
+
+    block modal
+
+    block scripts
+      script(type='text/javascript', src='assets/js/layout.js')
+    block end-body
+      script.
+        if (readyjs) {
+          document.addEventListener('DOMContentLoaded', function(){
+            for (var i = readyjs.length - 1; i >= 0; i--) {
+              readyjs[i]();
+            }
+          });
+        }

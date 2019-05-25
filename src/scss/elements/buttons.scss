@@ -1,0 +1,23 @@
+.btn
+{
+    font-weight: bold;
+    line-height: 2.06;
+
+    display: inline-block;
+
+    margin: 1rem;
+    padding: .75rem 2.25rem;
+
+    background-color: $color-white;
+    box-shadow: $shadow-gray;
+
+    border: none;
+    border-radius: .5rem;
+
+    &_red
+    {
+        color: $color-white;
+        background-color: $color-red;
+        box-shadow: $shadow-red;
+    }
+}

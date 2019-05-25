@@ -1,0 +1,59 @@
+.debug
+{
+    outline: 2px dashed rgba(0, 0, 0, 1) !important;
+    background: rgba(255,255,255, 0.9) !important;
+}
+
+
+.debug > *
+{
+    outline: 1px solid rgba(0,255,0, 1) !important;
+    background: rgba(0,255,0, 0.2) !important;
+}
+
+.debug > * > *
+{
+    outline: 1px solid rgba(255,255,0, 1) !important;
+    background: rgba(255,255,0, 0.2) !important;
+}
+
+.debug > * > * > *
+{
+    outline: 1px solid rgba(255,255,0, 1) !important;
+    background: rgba(255,255,0, 0.2) !important;
+}
+
+.debug > * > * > * > *
+{
+    outline: 1px solid rgba(255,0,255, 1) !important;
+    background: rgba(255,0,255, 0.2) !important;
+}
+
+.debug > * > * > * > * > *
+{
+    outline: 1px solid rgba(192,192,192, 1) !important;
+    background: 1px solid rgba(192,192,192, 0.2) !important;
+}
+
+.debug > * > * > * > * > *
+{
+    outline: 1px solid rgba(255, 0, 255, 1) !important;
+    background: rgba(255, 0, 255, 0.2) !important;
+}
+
+.debug > * > * > * > * > * > *
+{
+    outline: 1px solid rgba(20, 20, 20, 1) !important;
+    background: rgba(20, 20, 20, 0.2) !important;
+}
+
+.debug > * > * > * > * > * > * > *
+{
+    outline: 1px solid rgba(128,0,0, 1) !important;
+    background: rgba(128,0,0, 0.2) !important;
+}
+
+.debug > * > * > * > * > * > * > * *
+{
+    outline: 1px solid rgba(255,0,0, 1) !important;
+}

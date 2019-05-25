@@ -1,0 +1,15 @@
+$breakpoints: (
+  'small':  767px,
+  'medium': 992px,
+  'large':  1200px,
+  'FHD':  1920px,
+  'QHD':  2560px,
+  'UHD':  3840px
+) !default;
+
+
+$color-white: #fff;
+$color-light: #f9fafb;
+$color-red: #dc2327;
+$shadow-red: 0 0 .3rem 0 rgba(220, 35, 39, .78);
+$shadow-gray: 0 0 .3rem 0 rgba(100, 100, 100, .78);

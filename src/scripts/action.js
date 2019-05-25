@@ -1,0 +1,1 @@
+readyjs.push(FunText);

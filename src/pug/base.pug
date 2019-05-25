@@ -1,0 +1,56 @@
+extends template
+
+block vars
+  -
+    var siteTitle = 'Some Site';
+    var pageTitle = 'Some Page';
+    var description = 'Some Description';
+    var url       = '';
+    var image     = url + 'images/logo.svg';
+  -
+    var html = {
+      attrs: {
+        lang: 'ru'
+      },
+      classList: []
+    }
+  -
+    var body = {
+      attrs: {},
+      classList: []
+    }
+  -
+    var layout = {
+      attrs: {},
+      classList: []
+    }
+
+append meta
+  meta(name='description', content=description)
+  meta(property='og:title', content=pageTitle)
+  meta(property='og:type', content='website')
+  meta(property='og:url', content=url)
+  meta(property='og:image', content=image)
+  meta(property='og:image:type', content='image/svg')
+  meta(property='og:image:width', content='174')
+  meta(property='og:image:height', content='28')
+  meta(property='og:description', content=description)
+
+
+block styles
+  link(href='https://fonts.googleapis.com/css?family=Montserrat:200,300,400,600,700&display=swap' rel='stylesheet')
+  link(href='css/main.css' rel='stylesheet')
+
+block scripts
+  script(src="scripts/main.js")
+  script(src="scripts/action.js")
+
+block body-start
+
+block header
+  include header
+
+block modal
+
+block footer
+  include footer
