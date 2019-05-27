@@ -4,7 +4,17 @@ block header
     h3 Some Header
 
 block content
-    h1.fun-text Let's take a fun!
+    +b.arena
+        #player
+            +b.hero_man
+                +e.head
+                +e.body
+                +e.arm_left
+                    +e.hand_left
+                +e.arm_right
+                    +e.hand_right
+                +e.leg_left
+                +e.leg_right
 
 block footer
     h3 Some Footer

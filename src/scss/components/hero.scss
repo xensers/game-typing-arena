@@ -1,0 +1,316 @@
+.arena
+{
+  position: relative;
+  border: 0.3125rem solid dimgrey;
+  width: 45.5rem;
+  height: 18rem;
+  background-color: #ddd;
+  background-size: 100% auto;
+  background-position: center center;
+  overflow: hidden;
+}
+
+.hero
+{
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 4.5rem;
+  height: 6.5rem;
+  &, & * {
+    transition: 0.5s transform ease;
+  }
+
+  * {
+    position: absolute;
+    display: inline-block;
+    &:before{
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 101%;
+      height: 101%;
+      background-size: 14.375rem 9.375rem;
+      background-repeat: no-repeat;
+      border: 1px dashed #000000;
+    }
+  }
+
+  &__head
+  {
+    top: 0;
+    left: 0.75rem;
+    width: 3rem;
+    height: 3.5rem;
+    z-index: 4;
+    transform-origin: 50% 100%;
+    &:before
+    {
+      background-position: -7.5rem 0;
+    }
+  }
+  &__body
+  {
+    top: 3.25rem;
+    left: 1rem;
+    width: 2.4375rem;
+    height: 1.9375rem;
+    z-index: 2;
+    &:before {
+      background-position: -0.4375rem -4.875rem;
+    }
+  }
+  &__arm
+  {
+    top: 3.125rem;
+    width: 1.1875rem;
+    height: 2.1875rem;
+    z-index: 3;
+    transform-origin: 60% 25%;
+    &:before {
+      background-position: -7.0625rem -5.125rem;
+      transform: scaleX(-1);
+    }
+    &_left
+    {
+      left: 0.3125rem;
+      z-index: 4;
+    }
+    &_right
+    {
+      left: 2.5rem;
+      z-index: 1;
+    }
+
+  }
+  &__hand
+  {
+    top: 1.8em;
+    left: 0.15rem;
+    position: absolute;
+    width: 1.0625rem;
+    height: 1rem;
+    transform-origin: 20% 20%;
+    &:before {
+      background-position: -7rem -8.25rem;
+      transform: scaleX(-1);
+    }
+  }
+  &__leg
+  {
+    top: 4.75rem;
+    width: 1.3125rem;
+    height: 1.4375rem;
+    transform-origin: 50% 25%;
+    z-index: 1;
+    &:before {
+      background-position: -4.625rem -7.875rem;
+    }
+    &_left
+    {
+      left: 0.9375rem;
+    }
+    &_right
+    {
+      left: 2.125rem;
+    }
+  }
+}
+
+.hero_boy *:before
+{
+  border: none;
+  background-image: url("/images/boy.svg");
+}
+
+.hero_girl *:before
+{
+  border: none;
+  background-image: url("/images/girl.svg");
+}
+
+.hero_man *:before
+{
+  border: none;
+  background-image: url("/images/man.svg");
+}
+
+.hero_niga *:before
+{
+  border: none;
+  background-image: url("/images/niga.svg");
+}
+
+.hero_zombie *:before
+{
+  border: none;
+  background-image: url("/images/zombie.svg");
+}
+
+.hero
+{
+  &_move {
+    transition: transform 0.6s linear;
+  }
+
+  &_step-1 &__head
+  {
+    transform: rotate(2deg);
+  }
+
+  &_step-1 &__body
+  {
+    transform: rotate(-2deg);
+  }
+  &_step-1 &__arm_left
+  {
+    transform: rotate(45deg);
+  }
+  &_step-1 &__arm_right
+  {
+    transform: rotate(-45deg);
+  }
+  &_step-1 &__leg_left
+  {
+    transform: rotate(60deg);
+  }
+  &_step-1 &__leg_right
+  {
+    transform: rotate(-60deg);
+  }
+
+  &_step-2 &__head
+  {
+    transform: rotate(-2deg);
+  }
+  &_step-2 &__body
+  {
+    transform: rotate(2deg);
+  }
+  &_step-2 &__arm_left
+  {
+    transform: rotate(-15deg);
+  }
+  &_step-2 &__arm_right
+  {
+    transform: rotate(15deg);
+  }
+  &_step-2 &__leg_left
+  {
+    transform: translateX(80%);
+  }
+  &_step-2 &__leg_right
+  {
+    transform: translateX(-60%) rotate(60deg);
+  }
+}
+
+.hero
+{
+  &_jump
+  {
+    &, & * {
+      transition: 0.41s transform ease-in;
+    }
+  }
+
+  &_jump &__head{
+     transform: rotate(10deg);
+  }
+
+  &_jump &__arm_left
+  {
+    transform: rotate(90deg);
+  }
+
+  &_jump &__arm_right
+  {
+    transform: rotate(-160deg);
+  }
+
+  &_jump &__leg_left
+  {
+    transform: rotate(60deg);
+  }
+
+  &_jump &__leg_right
+  {
+    transform: rotate(-40deg);
+  }
+}
+
+.hero
+{
+  &_landed
+  {
+    transform: rotate(5deg) translateY(2%);
+
+    &, & * {
+      transition: 0.4s transform ease-out;
+    }
+  }
+
+  &_landed &__head
+  {
+    transform: rotate(15deg);
+  }
+
+  &_landed &__arm_right
+  {
+    transform: rotate(-15deg);
+  }
+
+  &_landed &__arm_left
+  {
+    transform: rotate(15deg);
+  }
+
+  &_landed &__leg_left
+  {
+    transform: rotate(25deg) translateY(-5%);
+  }
+
+  &_landed &__leg_right
+  {
+    transform: rotate(-5deg) translateY(-10%);
+    z-index: 2;
+  }
+}
+
+.hero
+{
+  &_down
+  {
+    transform: translateY(10%);
+  }
+
+  &_down &__head
+  {
+    transform: rotate(15deg) translateY(15%);
+  }
+  &_down &__body
+  {
+    transform: rotate(-5deg);
+  }
+
+  &_down &__arm_right
+  {
+    transform: rotate(-30deg);
+    //z-index: 2;
+  }
+
+  &_down &__leg_left
+  {
+    transform: rotate(90deg);
+  }
+
+  &_down &__leg_right
+  {
+    transform: translateY(-30%);
+    z-index: 2;
+  }
+}
+
