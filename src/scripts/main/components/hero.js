@@ -1,17 +1,11 @@
 function Hero(elemHero)  {
-    const animationsLoop = [];
-    requestAnimationFrame(function loop(time) {
-        animationsLoop.map(animate => {
-            animate(time);
-        });
 
-        requestAnimationFrame(loop);
-    });
+    const activeActions = [];
 
     this.state = {
         action: null,
         pose: null,
-        direction: -1,
+        direction: 1,
         directionY: 1,
         positionX: 0,
         positionY: 0,
@@ -19,13 +13,6 @@ function Hero(elemHero)  {
         boostX: 0,
         speedY: 0,
         boostY: 0
-    };
-
-    const arena =  {
-        xMin : 0,
-        xMax : 900,
-        yMin: 0,
-        yMax: 300
     };
 
     const getNextPositions = (position, boost, speed, direction, max, min) => {
@@ -152,33 +139,28 @@ function Hero(elemHero)  {
         return this;
     };
 
-    var start;
-    const activeActions = [];
 
     this.runAction = (actionName, direction) => {
-        start = performance.now();
         if (direction === 1 || direction === -1) {
             if (direction !== this.state.direction) {
                 this.state.direction = direction;
                 this.state.speedX = 0;
             }
         }
+
         const action = actions[actionName] ? actions[actionName] : false;
         if (!action) return this;
         if (activeActions.indexOf( actionName ) !== -1 ) return this;
         activeActions.push(actionName);
-        // console.log(activeActions, activeActions.indexOf( action ));
 
         let delay = 0;
         action.map((actionStep, index) => {
             setTimeout(actionStep.action, delay);
-            // console.log(index, delay, actionStep.name);
             delay += actionStep.duration ? actionStep.duration : 0;
         });
 
         setTimeout(() => {
             activeActions.splice(activeActions.indexOf(actionName, 1));
-            // console.log(activeActions);
         }, delay);
         return this;
     };
@@ -211,15 +193,15 @@ function Hero(elemHero)  {
         'move' : [
             {
                 name: 'Step1',
-                duration: 250,
+                duration: 300,
                 action: () => {
-                    this.state.boostX += 30;
+                    this.state.boostX = 35;
                     if (!this.state.pose) this.setPose('step-1');
                 }
             },
             {
                 name: 'Step2',
-                duration: 250,
+                duration: 300,
                 action: () => {
                     this.unsetPose('step-1');
                     if (!this.state.pose) this.setPose('step-2');

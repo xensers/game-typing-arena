@@ -1,0 +1,20 @@
+#arena
+{
+    position: relative;
+
+    overflow: hidden;
+
+    width: 45.5rem;
+    height: 18rem;
+
+    border: .3125rem solid dimgrey;
+    background-color: #ddd;
+    background-position: center center;
+    background-size: 100% auto;
+     > *
+    {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+}

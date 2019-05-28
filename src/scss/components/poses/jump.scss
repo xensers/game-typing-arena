@@ -1,0 +1,62 @@
+.hero
+{
+    &_jump &__head
+    {
+        transform: rotate(10deg);
+    }
+
+    &_jump &__arm_left
+    {
+        transform: rotate(90deg);
+    }
+
+    &_jump &__arm_right
+    {
+        transform: rotate(-160deg);
+    }
+
+    &_jump &__leg_left
+    {
+        transform: rotate(60deg);
+    }
+
+    &_jump &__leg_right
+    {
+        transform: rotate(-40deg);
+    }
+}
+
+.hero
+{
+    &_landed
+    {
+        transform: rotate(5deg) translateY(2%);
+    }
+
+    &_landed &__head
+    {
+        transform: rotate(15deg);
+    }
+
+    &_landed &__arm_right
+    {
+        transform: rotate(-15deg);
+    }
+
+    &_landed &__arm_left
+    {
+        transform: rotate(15deg);
+    }
+
+    &_landed &__leg_left
+    {
+        transform: rotate(25deg) translateY(-5%);
+    }
+
+    &_landed &__leg_right
+    {
+        z-index: 2;
+
+        transform: rotate(-5deg) translateY(-10%);
+    }
+}

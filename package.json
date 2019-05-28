@@ -8,6 +8,7 @@
   "author": "Eugene Naumov",
   "devDependencies": {
     "@babel/core": "^7.1.2",
+    "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.1.0",
     "browser-sync": "^2.24.7",
     "del": "^3.0.0",
@@ -29,5 +30,8 @@
     "gulp-useref": "^3.1.5",
     "imagemin-pngquant": "^6.0.0",
     "pump": "^3.0.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.4.5"
   }
 }
