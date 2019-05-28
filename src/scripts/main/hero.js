@@ -1,189 +1,237 @@
-const elemHero1 = document.querySelector('.hero');
+function Hero(elemHero)  {
+    const animationsLoop = [];
+    requestAnimationFrame(function loop(time) {
+        animationsLoop.map(animate => {
+            animate(time);
+        });
 
-const objHero = new Hero(elemHero1);
-
-document.addEventListener('keydown', (event) => {
-  event.preventDefault();
-  // console.log(event.key);
-  const keyName = event.key;
-  if (keyName === 'ArrowUp') {
-      objHero.action.jump();
-  }
-
-  if (keyName === 'ArrowDown') {
-      objHero.action.down();
-  }
-
-    if (keyName === 'ArrowRight') {
-        objHero.action.move(1);
-    }
-    if (keyName === 'ArrowLeft') {
-        objHero.action.move(-1);
-    }
-}, false);
-
-function Hero(elemHero) {
-
-    let actionTimer;
+        requestAnimationFrame(loop);
+    });
 
     this.state = {
         action: null,
         pose: null,
-        direction: 1,
+        direction: -1,
+        directionY: 1,
         positionX: 0,
         positionY: 0,
+        speedX: 0,
+        boostX: 0,
+        speedY: 0,
+        boostY: 0
     };
 
-    this.setPosition = (x, y, direction) => {
-        if (!x && typeof(x) !== 'number') x = this.state.positionX;
-        if (!y && typeof(y) !== 'number') y = this.state.positionY;
-        if (!direction && typeof(direction) !== 'number') direction = this.state.direction;
+    const arena =  {
+        xMin : 0,
+        xMax : 900,
+        yMin: 0,
+        yMax: 300
+    };
 
-        if (direction !== this.state.direction) {
-            elemHero.style.transition = 'none 0s ease 0s';
-            elemHero.style.transform = `translate(${this.state.positionX * 100}%, ${this.state.positionY * 100}%) scaleX(${direction})`;
-            this.state.direction = direction;
+    const getNextPositions = (position, boost, speed, direction, max, min) => {
+        speed = Math.abs(speed) < 1 ? 0 : speed;
+        boost = boost <= 0 ? 0 : boost;
+
+        if (boost > 0) {
+            boost -= 1 + (Math.abs(boost) / 100);
+            speed += 1 + (Math.abs(boost) / 100);
+        }
+        else if (speed !== 0 && speed > 0) {
+            speed -= 1 + (Math.abs(speed) / 100);
+        } else if (speed !== 0 && speed < 0) {
+            speed += 1 + (Math.abs(speed) / 100);
         }
 
-        setTimeout(() => {
-            requestAnimationFrame(()=>
-            {
-                if (x < 0) x = 0;
-                if (x > 9) x = 9;
-                if (y > 1) y = 0;
-                if (y < -2) y = -2;
+        position = position + speed / 10 * direction;
 
-                elemHero.style.transition = '';
-                this.state.positionX = x;
-                this.state.positionY = y;
-                elemHero.style.transform = `translate(${x * 100}%, ${y * 100}%) scaleX(${this.state.direction})`;
-            });
-        }, 0);
+        if (position > max) {
+            direction = speed > 0 ? -1 : 1;
+        } else if (position < min) {
+            direction = speed > 0 ? 1 : -1;
+        }
 
+        return {
+            position: position,
+            boost : boost,
+            speed : speed,
+            direction : direction
+        }
     };
 
+    animationsLoop.push((time) => {
+        let nextPositionsX = getNextPositions(
+            this.state.positionX,
+            this.state.boostX,
+            this.state.speedX,
+            this.state.direction,
+            arena.xMax,
+            arena.xMin);
+
+        this.state.positionX = nextPositionsX.position;
+        this.state.boostX = nextPositionsX.boost;
+        this.state.speedX = nextPositionsX.speed;
+        this.state.direction = nextPositionsX.direction;
+
+        let nextPositionsY = getNextPositions(
+            this.state.positionY,
+            this.state.boostY,
+            this.state.speedY,
+            this.state.directionY,
+            arena.yMax,
+            arena.yMin);
+
+        this.state.positionY = nextPositionsY.position;
+        this.state.boostY = nextPositionsY.boost;
+        this.state.speedY = nextPositionsY.speed;
+        this.state.directionY = nextPositionsY.direction;
+
+        if (this.state.speedY === 0 && this.state.positionY > 0) {
+            this.state.directionY = -1;
+        }
+
+        if (this.state.directionY === -1) {
+            this.state.speedY += 3;
+        }
+
+        if (this.state.positionY <= 0 && this.state.speedY < 80) {
+            this.state.boostY = 0;
+            this.state.speedY = 0;
+            this.state.positionY = 0;
+            this.state.directionY = 1;
+            if (this.state.pose === 'jump') {
+                this.setPose('landed');
+                setTimeout(() => {
+                    this.unsetPose('landed');
+                    this.unsetPose('jump');
+                },300);
+            }
+        }
+
+        if (this.state.speedY > 0) {
+            if (!this.state.pose) this.setPose('jump');
+        } else {
+            this.unsetPose('jump');
+        }
+
+        elemHero.style.transform = `translate(${this.state.positionX}%, ${-this.state.positionY}%) scaleX(${this.state.direction})`;
+
+    });
+
     this.setPose = (pose) => {
-        elemHero.classList.remove('hero_' + this.state.pose);
-        this.state.pose = pose;
+        if (this.state.pose) {
+            requestAnimationFrame(() => {
+                elemHero.classList.remove('hero_' + this.state.pose);
+            });
+        }
+
         if (pose) {
-            elemHero.classList.add('hero_' + pose);
+            this.state.pose = pose;
+            requestAnimationFrame(() => {
+                elemHero.classList.add('hero_' + pose);
+            });
+        }
+
+        return this;
+    };
+
+    this.unsetPose = (pose) => {
+        this.state.pose = null;
+        requestAnimationFrame(() => {
+                elemHero.classList.remove('hero_' + pose);
+                // TODO: Возможно нужно будет возвращать предыдущую позу
+        });
+        return this;
+    };
+
+    this.setSkin = (skin) => {
+        elemHero.classList.remove('hero_' + this.state.skin);
+        this.state.skin = skin;
+        if (skin) {
+            elemHero.classList.add('hero_' + skin);
         }
         return this;
     };
 
-    const action = {
-        'start': () => {},
-        'end': () => {},
-        'reset': () => {},
-        'play': (timeout) => {
-            requestAnimationFrame(() => {
-                if (!timeout) timeout = 300;
-                action.reset();
-                clearTimeout(actionTimer);
-                requestAnimationFrame(action.start);
-                actionTimer = setTimeout(() => {
-                    requestAnimationFrame(action.end);
-                    this.state.action = false;
-                }, timeout);
-            })
+    var start;
+    const activeActions = [];
+
+    this.runAction = (actionName, direction) => {
+        start = performance.now();
+        if (direction === 1 || direction === -1) {
+            if (direction !== this.state.direction) {
+                this.state.direction = direction;
+                this.state.speedX = 0;
+            }
         }
+        const action = actions[actionName] ? actions[actionName] : false;
+        if (!action) return this;
+        if (activeActions.indexOf( actionName ) !== -1 ) return this;
+        activeActions.push(actionName);
+        // console.log(activeActions, activeActions.indexOf( action ));
+
+        let delay = 0;
+        action.map((actionStep, index) => {
+            setTimeout(actionStep.action, delay);
+            // console.log(index, delay, actionStep.name);
+            delay += actionStep.duration ? actionStep.duration : 0;
+        });
+
+        setTimeout(() => {
+            activeActions.splice(activeActions.indexOf(actionName, 1));
+            // console.log(activeActions);
+        }, delay);
+        return this;
     };
 
-    this.action = {
-        'jump' : (direction) => {
-            if (this.state.action === 'jump') return false;
-            this.state.action  = 'jump';
-            action.reset();
-
-            let timer;
-            action.start = () => {
-                this.setPose('jump');
-
-                if (typeof(direction) !== 'number' && direction === 1) {
-                    this.setPosition(this.state.positionX + 1, -1.5, direction);
-                } else if (typeof(direction) !== 'number' && direction === -1) {
-                    this.setPosition(this.state.positionX - 1, -1.5, direction);
-                } else {
-                    this.setPosition(false, -1.5);
+    const actions = {
+        'jump': [
+            {
+                name: 'JumpStart',
+                duration: 300,
+                action: () => {
+                    if (!this.state.positionY > 0) this.state.speedY = 60;
                 }
-
-                timer = setTimeout(() => {
-                    this.setPosition(false, 0.1);
-                    this.setPose('landed');
-                }, 400);
-            };
-            action.end = action.reset = () => {
-                clearTimeout(timer);
-                this.setPosition(false, 0);
-                this.setPose(null);
-            };
-            action.reset = () => {
-                clearTimeout(timer);
-                this.setPosition(false, 0);
-                console.log('reset jump');
-            };
-            action.play(800);
-        },
-        'down' : () => {
-            if (this.state.action === 'down') return false;
-            this.state.action  = 'down';
-            action.reset();
-            action.start = () => {
-                this.setPosition(false, 0.1);
-                this.setPose('down');
-            };
-            action.end = () => {
-                this.setPosition(false, 0);
-                this.setPose(false);
-                console.log('reset down');
-            };
-            action.reset = () => {
-                this.setPosition(false, 0);
-            };
-            action.play(500);
-        },
-        'move' : (direction) => {
-            if (this.state.action === 'move') return false;
-            this.state.action = 'move';
-            let timer;
-            action.reset();
-            if (!direction && typeof(direction) !== 'number') direction = this.state.direction;
-            action.start = () => {
-                clearTimeout(timer);
-                if (direction === 1) {
-                    this.setPosition(this.state.positionX + 1, false, direction);
+            }
+        ],
+        'down' : [
+            {
+                name: 'DownStart',
+                duration: 500,
+                action: () => {
+                    this.setPose('down');;
                 }
-                if (direction === -1) {
-                    this.setPosition(this.state.positionX - 1, false, direction);
+            },
+            {
+                name: 'DownEnd',
+                action: () => {
+                    this.unsetPose('down');
                 }
-                elemHero.classList.add('hero_move');
-                if (!this.state.pose)
-                {
-                    console.log(this.state.pose);
-                    this.setPose('step-2');
-                    timer = setTimeout(() => {
-                        elemHero.classList.remove('step-2');
-                        this.setPose('step-1');
-                    }, 300);
+            }
+        ],
+        'move' : [
+            {
+                name: 'Step1',
+                duration: 250,
+                action: () => {
+                    this.state.boostX += 30;
+                    if (!this.state.pose) this.setPose('step-1');
                 }
-            };
-            action.reset = () => {
-                elemHero.classList.remove('hero_move');
-                clearTimeout(timer);
-                this.setPose(null);
-            };
-            action.end  = action.reset;
-            action.play(600);
-        },
-        'stop' : () => {
-            action.reset();
-            action.start = () => {
-                this.setPose(null);
-            };
-            action.end = () => {};
-            action.reset = () => {};
-            action.play(0);
-        }
+            },
+            {
+                name: 'Step2',
+                duration: 250,
+                action: () => {
+                    this.unsetPose('step-1');
+                    if (!this.state.pose) this.setPose('step-2');
+                }
+            },
+            {
+                name: 'stop',
+                action: () => {
+                    this.unsetPose('step-2');
+                }
+            }
+        ]
     };
 
     return this;

@@ -86,11 +86,13 @@ gulp.task('scripts', function() {
        .pipe(sourcemaps.write())
        .pipe(gulp.dest('dist/scripts/'));
 
-   gulp.src(['src/scripts/*.js'])
+   return gulp.src(['src/scripts/*.js'])
+       .pipe(sourcemaps.init())
        .pipe(babel({
            presets: ['@babel/env']
        }))
        .pipe(uglify())
+       .pipe(sourcemaps.write())
        .pipe(gulp.dest('dist/scripts/'));
 });
 
