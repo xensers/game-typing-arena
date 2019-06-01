@@ -1,0 +1,29 @@
+.hero
+{
+  &_hit-2 &__head
+  {
+    transform: rotate(5deg);
+  }
+
+  &_hit-1 &__arm_right
+  {
+    transform: rotate(-180deg);
+  }
+
+  &_hit-2 &__arm_right
+  {
+    transform: rotate(80deg) ;
+  }
+
+  &_hit-1 &__hand_right,
+  &_hit-2 &__hand_right
+  {
+    transform: rotate(45deg) ;
+  }
+
+  &_hit-2 &__body
+  {
+    transform: rotate(5deg);
+  }
+
+}

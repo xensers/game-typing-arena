@@ -1,62 +1,32 @@
 .hero
 {
-    &_step-1 &__head
-    {
-        transform: rotate(2deg);
-    }
+  &_down &__head
+  {
+    transform: translateY(30%) rotate(25deg);
+  }
+  &_down &__body
+  {
+    transform: translateY(20%);
+  }
 
-    &_step-1 &__body
-    {
-        transform: rotate(-2deg);
-    }
+   &_down &__arm_left
+   {
+     transform: translateY(10%) rotate(25deg);
+   }
 
-    &_step-1 &__arm_left
-    {
-        transform: rotate(45deg);
-    }
+  &_down &__arm_right
+  {
+    transform: translateY(10%) rotate(-25deg);
+  }
 
-    &_step-1 &__arm_right
-    {
-        transform: rotate(-45deg);
-    }
+  &_down &__leg_left
+  {
+    transform: translateY(20%) rotate(80deg);
+  }
 
-    &_step-1 &__leg_left
-    {
-        transform: rotate(60deg);
-    }
-
-    &_step-1 &__leg_right
-    {
-        transform: rotate(-60deg);
-    }
-
-    &_step-2 &__head
-    {
-        transform: rotate(-2deg);
-    }
-
-    &_step-2 &__body
-    {
-        transform: rotate(2deg);
-    }
-
-    &_step-2 &__arm_left
-    {
-        transform: rotate(-15deg);
-    }
-
-    &_step-2 &__arm_right
-    {
-        transform: rotate(15deg);
-    }
-
-    &_step-2 &__leg_left
-    {
-        transform: translateX(80%);
-    }
-
-    &_step-2 &__leg_right
-    {
-        transform: translateX(-60%) rotate(60deg);
-    }
+  &_down &__leg_right
+  {
+    transform: translateY(0%);
+    z-index: 2;
+  }
 }

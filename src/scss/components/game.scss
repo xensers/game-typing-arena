@@ -1,14 +1,20 @@
-@import "arena";
+@import 'arena';
 
-@import "hero";
+@import 'ui';
+@import 'hero';
 
-@import "skins/man";
-@import "skins/boy";
-@import "skins/girl";
-@import "skins/man";
-@import "skins/niga";
-@import "skins/zombie";
+@import 'skins/man';
+@import 'skins/boy';
+@import 'skins/girl';
+@import 'skins/man';
+@import 'skins/niga';
+@import 'skins/zombie';
 
-@import "poses/down";
-@import "poses/jump";
-@import "poses/move";
+@import 'poses/jump';
+@import 'poses/down';
+@import 'poses/move';
+@import 'poses/hit';
+@import 'poses/damage';
+
+
+

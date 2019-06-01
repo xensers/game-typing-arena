@@ -1,0 +1,49 @@
+.ui
+{
+    &__icon
+    {
+        font-size: 1.2em;
+        padding: 0.1em 0.2em;
+        border: .1em solid #222;
+        border-radius: 50%;
+        background: #dddddd;
+    }
+
+    &__text
+    {
+        padding: .1em .2em;
+
+        border: .1em solid #222;
+        color: #000;
+        text-shadow: 0 0 0.5rem rgba(255, 255, 255, 1);
+        background: rgba(200, 200, 200, 0.5);
+
+        white-space: nowrap;
+        transition: transform 0.3s ease;
+    }
+
+    &__element
+    {
+        display: inline-flex;
+        flex-direction: row;
+
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease;
+    }
+}
+
+.symbol
+{
+    width: 0.7em;
+    text-align: center;
+    &:first-child {
+        font-weight: bold;
+        transform: scale(1.5);
+    }
+    &_selected
+    {
+        font-weight: bold;
+        transform: scale(2);
+    }
+}

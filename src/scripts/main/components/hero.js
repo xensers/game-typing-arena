@@ -1,6 +1,8 @@
-function Hero(elemHero)  {
+function Hero(elemHero) {
 
     const activeActions = [];
+
+    const elemSkillet = elemHero.querySelector('.hero__skillet')
 
     this.state = {
         action: null,
@@ -100,7 +102,8 @@ function Hero(elemHero)  {
             this.unsetPose('jump');
         }
 
-        elemHero.style.transform = `translate(${this.state.positionX}%, ${-this.state.positionY}%) scaleX(${this.state.direction})`;
+        elemHero.style.transform = `translate(${this.state.positionX}%, ${-this.state.positionY}%)`;
+        elemSkillet.style.transform = `scaleX(${this.state.direction})`;
 
     });
 
@@ -141,6 +144,8 @@ function Hero(elemHero)  {
 
 
     this.runAction = (actionName, direction) => {
+        if (this.action) this.nextAction = [actionName, direction];
+
         if (direction === 1 || direction === -1) {
             if (direction !== this.state.direction) {
                 this.state.direction = direction;
@@ -168,23 +173,24 @@ function Hero(elemHero)  {
     const actions = {
         'jump': [
             {
-                name: 'JumpStart',
+                name: 'jump-start',
                 duration: 300,
                 action: () => {
                     if (!this.state.positionY > 0) this.state.speedY = 60;
+                    this.state.boostX = 30;
                 }
             }
         ],
         'down' : [
             {
-                name: 'DownStart',
+                name: 'down-start',
                 duration: 500,
                 action: () => {
                     this.setPose('down');;
                 }
             },
             {
-                name: 'DownEnd',
+                name: 'down-end',
                 action: () => {
                     this.unsetPose('down');
                 }
@@ -211,6 +217,72 @@ function Hero(elemHero)  {
                 name: 'stop',
                 action: () => {
                     this.unsetPose('step-2');
+                }
+            }
+        ],
+        'damage' : [
+            {
+                name: 'takeDamageStart',
+                duration: 300,
+                action: () => {
+                    this.setPose('damage');
+                }
+            },
+            {
+                name: 'takeDamageEnd',
+                action: () => {
+                    this.unsetPose('damage');
+                }
+            }
+        ],
+        'hit' : [
+            {
+                name: 'hit1',
+                duration: 300,
+                action: () => {
+                    this.setPose('hit-1');
+                }
+            },
+            {
+                name: 'hit2',
+                duration: 300,
+                action: () => {
+                    this.unsetPose('hit-1');
+                    this.setPose('hit-2');
+                    let changedDirection = false;
+                    for (var key in gameObjects) {
+                      if (gameObjects[key] !== this) {
+                          let distance =  gameObjects[key].state.positionX - this.state.positionX;
+                          let distanceY = gameObjects[key].state.positionY - this.state.positionY;
+
+                          if (Math.abs(distance) <= 200 && Math.abs(distanceY) < 100) {
+
+                              if (!changedDirection) {
+                                  if (distance > 0) {
+                                      this.state.direction = 1;
+                                      gameObjects[key].state.direction = -1;
+                                  } else {
+                                      this.state.direction = -1;
+                                      gameObjects[key].state.direction = 1;
+                                  }
+                                  changedDirection = true;
+                              }
+
+                              if (this.state.direction + gameObjects[key].state.direction === 0
+                                  && distance * this.state.direction > 0) {
+                                  gameObjects[key].state.speedX = -50;
+                                  gameObjects[key].runAction('damage');
+                              }
+
+                          }
+                      }
+                    }
+                }
+            },
+            {
+                name: 'hitEnd',
+                action: () => {
+                    this.unsetPose('hit-2');
                 }
             }
         ]

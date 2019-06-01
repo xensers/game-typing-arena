@@ -1,0 +1,21 @@
+.hero
+{
+  &_damage &__head
+  {
+    transform: rotate(15deg);
+
+    &:before
+    {
+      background-position: -3.6rem 0;
+    }
+  }
+
+  &_damage &__arm
+  {
+    transform: rotate(-60deg);
+  }
+
+  &_damage &__leg {
+    transform: rotate(-25deg);
+  }
+}

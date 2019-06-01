@@ -5,27 +5,50 @@ block header
     #framerate
 
 block content
+
     #arena
-        #player1
-            +b.hero
-                +e.head
-                +e.body
-                +e.arm_left
-                    +e.hand_left
-                +e.arm_right
-                    +e.hand_right
-                +e.leg_left
-                +e.leg_right
         #player2
             +b.hero
-                +e.head
-                +e.body
-                +e.arm_left
-                    +e.hand_left
-                +e.arm_right
-                    +e.hand_right
-                +e.leg_left
-                +e.leg_right
+                +e.skillet
+                    +e.head
+                    +e.body
+                    +e.arm_left
+                        +e.hand_left
+                    +e.arm_right
+                        +e.hand_right
+                    +e.leg_left
+                    +e.leg_right
+        #player1
+            +b.hero
+                +e.skillet
+                    +e.head
+                    +e.body
+                    +e.arm_left
+                        +e.hand_left
+                    +e.arm_right
+                        +e.hand_right
+                    +e.leg_left
+                    +e.leg_right
+                +b.ui
+                    +e.element_move-left(
+                            data-action="move",
+                            data-direction="-1"
+                            data-icon="left"
+                        )
+                    +e.element_move-right(
+                            data-action="move",
+                            data-direction="1"
+                            data-icon="right"
+                        )
+                    +e.element_jump(
+                            data-action="jump",
+                            data-icon="up"
+                        )
+                    +e.element_hit(
+                            data-action="hit",
+                            data-icon="hit"
+                        )
+
 
 block footer
     h3 Some Footer
