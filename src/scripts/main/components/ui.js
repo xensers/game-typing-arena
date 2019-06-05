@@ -1,35 +1,83 @@
-let uiElements = [];
+function Ui () {
+    let charCounter = 0;
+    let found = -1;
 
-let elems = document.querySelectorAll('.ui__element');
-for (let i = 0; i < elems.length; i++) {
-    uiElements[i] = new UiElement(elems[i]);
-    uiElements[i].setText(makePhrase(4));
-}
+    this.makePhrase = (length) => {
+        let result           = '';
+        let characters       = 'abcdefghijklmnopqrstuvwxyz';
+        let charactersLength = characters.length;
+        for ( let i = 0; i < length; i++ ) {
+            let newChar = characters.charAt(Math.floor(Math.random() * charactersLength));
+            let skip = false;
+            if (i === 0) {
+                this.elements.map((element, index) => {
+                    if (element.symbols[0] === newChar) {
+                        i = -1;
+                        skip = true;
+                    }
+                });
+            }
+            if (!skip) result += newChar;
+        }
+        return result;
+    };
 
-function makePhrase(length) {
-    let result           = '';
-    let characters       = 'abcdefghijklmnopqrstuvwxyz';
-    let charactersLength = characters.length;
-    for ( let i = 0; i < length; i++ ) {
-        let newChar = characters.charAt(Math.floor(Math.random() * charactersLength));
-        let skip = false;
-        if (i === 0) {
-            // console.log(i, '------start-------');
-            uiElements.map((uiElement, index) => {
-                // console.log(i, uiElement.symbols[0], newChar, uiElement.symbols[0] === newChar);
-                if (uiElement.symbols[0] === newChar) {
-                    i = -1;
-                    skip = true;
-                    // console.log(i, '------true-------');
+    this.elements = [];
+    let elems = document.querySelectorAll('.ui__element');
+    for (let i = 0; i < elems.length; i++) {
+        this.elements[i] = new UiElement(elems[i]);
+        let length = 4;
+        if (config.lengthPhrasesForActions[this.elements[i].action]) {
+            length = config.lengthPhrasesForActions[this.elements[i].action];
+        }
+        this.elements[i].setText(this.makePhrase(length));
+    }
+
+    this.found = (key) => {
+        if (found < 0) {
+            this.elements.map((uiElement, index) => {
+                if (uiElement.symbols[charCounter] === key) {
+                    uiElement.elemSymbols[charCounter].classList.remove('fadeIn');
+                    uiElement.elemSymbols[charCounter].classList.add('fadeOutDown');
+                    uiElement.elemText.style.transform = 'scale(1.5)';
+                    found = index;
+                } else {
+                    uiElement.elem.style.opacity = '0';
                 }
             });
+            charCounter++;
+        } else if (this.elements[found].symbols[charCounter] === key) {
+            this.elements[found].elemSymbols[charCounter].classList.remove('fadeIn');
+            this.elements[found].elemSymbols[charCounter].classList.add('fadeOutDown');
+            charCounter++;
+        } else {
+            this.elements[found].setText(this.makePhrase(this.elements[found].text.length));
+            found = -1;
+            charCounter = 0;
         }
-        if (!skip) result += newChar;
-        // else console.log(i, '------skip-------', result);
-    }
-    return result;
-}
 
+        if (found >= 0 && this.elements[found].symbols.length === charCounter) {
+            this.elements[found].setText(this.makePhrase(this.elements[found].text.length));
+            gameObjects.player1.runAction(this.elements[found].action , +this.elements[found].direction);
+            found = -1;
+            charCounter = 0;
+        } else if (found >= 0 ) {
+            this.elements[found].elemSymbols[charCounter].classList.add('symbol_selected');
+        }
+
+        if (found < 0){
+            this.elements.map((uiElement, index) => {
+                uiElement.elem.style.opacity = '1';
+                uiElement.elemText.style.transform = '';
+            });
+            found = -1;
+            charCounter = 0;
+        }
+    };
+
+    return this;
+
+}
 
 
 function UiElement (elem) {
@@ -74,14 +122,3 @@ function UiElement (elem) {
 
   return this;
 }
-
-
-
-
-
-
-
-
-
-
-

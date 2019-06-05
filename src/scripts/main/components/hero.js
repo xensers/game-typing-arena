@@ -5,7 +5,8 @@ function Hero(elemHero) {
     const elemSkillet = elemHero.querySelector('.hero__skillet')
 
     this.state = {
-        action: null,
+        action: false,
+        nextAction: false,
         pose: null,
         direction: 1,
         directionY: 1,
@@ -142,16 +143,19 @@ function Hero(elemHero) {
         return this;
     };
 
+    this.nextAction = false;
+
 
     this.runAction = (actionName, direction) => {
-        if (this.action) this.nextAction = [actionName, direction];
-
         if (direction === 1 || direction === -1) {
             if (direction !== this.state.direction) {
                 this.state.direction = direction;
                 this.state.speedX = 0;
             }
         }
+
+        if (this.state.action) this.state.nextAction = [actionName, direction];
+        console.log(this.state.nextAction);
 
         const action = actions[actionName] ? actions[actionName] : false;
         if (!action) return this;
