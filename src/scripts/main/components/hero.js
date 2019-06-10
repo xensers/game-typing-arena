@@ -18,7 +18,7 @@ function Hero(elemHero) {
         boostY: 0
     };
 
-    const getNextPositions = (position, boost, speed, direction, max, min) => {
+    const getNextPositions = (position, boost, speed, direction, posMax, posMin) => {
         speed = Math.abs(speed) < 1 ? 0 : speed;
         boost = boost <= 0 ? 0 : boost;
 
@@ -34,9 +34,9 @@ function Hero(elemHero) {
 
         position = position + speed / 10 * direction;
 
-        if (position > max) {
+        if (position > posMax) {
             direction = speed > 0 ? -1 : 1;
-        } else if (position < min) {
+        } else if (position < posMin) {
             direction = speed > 0 ? 1 : -1;
         }
 
@@ -154,12 +154,15 @@ function Hero(elemHero) {
             }
         }
 
-        if (this.state.action) this.state.nextAction = [actionName, direction];
-        console.log(this.state.nextAction);
+
+        if (activeActions.indexOf( actionName ) !== -1 ) {
+            this.state.nextAction = [actionName, direction];
+            return this;
+        }
 
         const action = actions[actionName] ? actions[actionName] : false;
         if (!action) return this;
-        if (activeActions.indexOf( actionName ) !== -1 ) return this;
+
         activeActions.push(actionName);
 
         let delay = 0;
@@ -170,7 +173,14 @@ function Hero(elemHero) {
 
         setTimeout(() => {
             activeActions.splice(activeActions.indexOf(actionName, 1));
+            this.state.action = false;
+
+            if(this.state.nextAction) {
+                this.runAction(this.state.nextAction[0], this.state.nextAction[1]);
+                this.state.nextAction = false;
+            }
         }, delay);
+
         return this;
     };
 
@@ -178,10 +188,12 @@ function Hero(elemHero) {
         'jump': [
             {
                 name: 'jump-start',
-                duration: 300,
+                duration: 1500,
                 action: () => {
-                    if (!this.state.positionY > 0) this.state.speedY = 60;
-                    this.state.boostX = 30;
+                    if (!this.state.positionY > 0) {
+                        this.state.speedY = 60;
+                        this.state.boostX = 40;
+                    }
                 }
             }
         ],
