@@ -1,14 +1,12 @@
 const config = {
   lengthPhrasesForActions : {
-     move : 2,
+     move : 1,
      jump : 2,
      hit  : 3
   }
 };
 
 const ui = new Ui();
-
-
 
 const animationsLoop = [];
 requestAnimationFrame(function loop(time) {
@@ -27,50 +25,54 @@ const arena =  {
     yMax: 300
 };
 
-const elemHero1 = document.querySelector('#player1 .hero');
-const elemHero2 = document.querySelector('#player2 .hero');
+const elemPlayer = document.querySelector('#player .hero');
+const elemEnemy = document.querySelector('#enemy .hero');
 
-gameObjects.player1 = new Hero(elemHero1);
-gameObjects.player2 = new Hero(elemHero2);
+gameObjects.player = new Hero(elemPlayer);
+gameObjects.enemy = new Hero(elemEnemy);
+
+gameObjects.player.setSkin('man');
+gameObjects.player.state.positionX = 100;
+
+gameObjects.enemy.setSkin('zombie');
+gameObjects.enemy.state.positionX = 800;
+gameObjects.enemy.state.direction = -1;
 
 
-
-gameObjects.player1.setSkin('man');
-// gameObjects.player2.setPose('damage');
-gameObjects.player1.state.positionX = 100;
-
-gameObjects.player2.setSkin('zombie');
-gameObjects.player2.state.positionX = 800;
-gameObjects.player2.state.direction = -1;
+let soundClick = new Audio();
+soundClick.src = '../media/click.mp3';
 
 
 let charCounter = 0;
 let found = -1;
 document.addEventListener('keydown', (event) => {
-    event.preventDefault();
     // console.log(event.key);
-    ui.found(event.key);
+    if (ui.found(event.key)) {
+      event.preventDefault();
+      soundClick.currentTime = 0;
+      soundClick.play();
+    }
 
     switch (event.keyCode) {
           case 16:
               event.preventDefault();
-              gameObjects.player2.runAction('hit');
+              gameObjects.enemy.runAction('hit');
               break;
           case 38:
               event.preventDefault();
-              gameObjects.player2.runAction('jump');
+              gameObjects.enemy.runAction('jump');
               break;
           case 40:
               event.preventDefault();
-              gameObjects.player2.runAction('down');
+              gameObjects.enemy.runAction('down');
               break;
           case 37:
               event.preventDefault();
-              gameObjects.player2.runAction('move', -1);
+              gameObjects.enemy.runAction('move', -1);
               break;
           case 39:
               event.preventDefault();
-              gameObjects.player2.runAction('move', 1);
+              gameObjects.enemy.runAction('move', 1);
               break;
     }
 }, false);
