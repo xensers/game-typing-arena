@@ -1,7 +1,5 @@
 function Hero(elemHero) {
-
     const activeActions = [];
-
     const elemSkillet = elemHero.querySelector('.hero__skillet')
 
     this.state = {
@@ -17,96 +15,6 @@ function Hero(elemHero) {
         speedY: 0,
         boostY: 0
     };
-
-    const getNextPositions = (position, boost, speed, direction, posMax, posMin) => {
-        speed = Math.abs(speed) < 1 ? 0 : speed;
-        boost = boost <= 0 ? 0 : boost;
-
-        if (boost > 0) {
-            boost -= 1 + (Math.abs(boost) / 100);
-            speed += 1 + (Math.abs(boost) / 100);
-        }
-        else if (speed !== 0 && speed > 0) {
-            speed -= 1 + (Math.abs(speed) / 100);
-        } else if (speed !== 0 && speed < 0) {
-            speed += 1 + (Math.abs(speed) / 100);
-        }
-
-        position = position + speed / 10 * direction;
-
-        if (position > posMax) {
-            direction = speed > 0 ? -1 : 1;
-        } else if (position < posMin) {
-            direction = speed > 0 ? 1 : -1;
-        }
-
-        return {
-            position: position,
-            boost : boost,
-            speed : speed,
-            direction : direction
-        }
-    };
-
-    animationsLoop.push((time) => {
-        let nextPositionsX = getNextPositions(
-            this.state.positionX,
-            this.state.boostX,
-            this.state.speedX,
-            this.state.direction,
-            arena.xMax,
-            arena.xMin);
-
-        this.state.positionX = nextPositionsX.position;
-        this.state.boostX = nextPositionsX.boost;
-        this.state.speedX = nextPositionsX.speed;
-        this.state.direction = nextPositionsX.direction;
-
-        let nextPositionsY = getNextPositions(
-            this.state.positionY,
-            this.state.boostY,
-            this.state.speedY,
-            this.state.directionY,
-            arena.yMax,
-            arena.yMin);
-
-        this.state.positionY = nextPositionsY.position;
-        this.state.boostY = nextPositionsY.boost;
-        this.state.speedY = nextPositionsY.speed;
-        this.state.directionY = nextPositionsY.direction;
-
-        if (this.state.speedY === 0 && this.state.positionY > 0) {
-            this.state.directionY = -1;
-        }
-
-        if (this.state.directionY === -1) {
-            this.state.speedY += 3;
-        }
-
-        if (this.state.positionY <= 0 && this.state.speedY < 80) {
-            this.state.boostY = 0;
-            this.state.speedY = 0;
-            this.state.positionY = 0;
-            this.state.directionY = 1;
-            if (this.state.pose === 'jump') {
-                this.setPose('landed');
-                setTimeout(() => {
-                    this.unsetPose('landed');
-                    this.unsetPose('jump');
-                },300);
-            }
-        }
-
-        if (this.state.speedY > 0) {
-            if (!this.state.pose) this.setPose('jump');
-        } else {
-            this.unsetPose('jump');
-        }
-
-        elemHero.style.transform = `translate(${this.state.positionX}%, ${-this.state.positionY}%)`;
-        elemSkillet.style.transform = `scaleX(${this.state.direction})`;
-
-    });
 
     this.setPose = (pose) => {
         if (this.state.pose) {
@@ -143,9 +51,6 @@ function Hero(elemHero) {
         return this;
     };
 
-    this.nextAction = false;
-
-
     this.runAction = (actionName, direction) => {
         if (direction === 1 || direction === -1) {
             if (direction !== this.state.direction) {
@@ -153,7 +58,6 @@ function Hero(elemHero) {
                 this.state.speedX = 0;
             }
         }
-
 
         if (activeActions.indexOf( actionName ) !== -1 ) {
             this.state.nextAction = [actionName, direction];
@@ -173,7 +77,6 @@ function Hero(elemHero) {
 
         setTimeout(() => {
             activeActions.splice(activeActions.indexOf(actionName, 1));
-            this.state.action = false;
 
             if(this.state.nextAction) {
                 this.runAction(this.state.nextAction[0], this.state.nextAction[1]);
@@ -303,6 +206,65 @@ function Hero(elemHero) {
             }
         ]
     };
+
+    animationsLoop.push((time) => {
+        let nextPositionsX = physics(
+            this.state.positionX,
+            this.state.boostX,
+            this.state.speedX,
+            this.state.direction,
+            arena.xMax,
+            arena.xMin);
+
+        this.state.positionX = nextPositionsX.position;
+        this.state.boostX = nextPositionsX.boost;
+        this.state.speedX = nextPositionsX.speed;
+        this.state.direction = nextPositionsX.direction;
+
+        let nextPositionsY = physics(
+            this.state.positionY,
+            this.state.boostY,
+            this.state.speedY,
+            this.state.directionY,
+            arena.yMax,
+            arena.yMin);
+
+        this.state.positionY = nextPositionsY.position;
+        this.state.boostY = nextPositionsY.boost;
+        this.state.speedY = nextPositionsY.speed;
+        this.state.directionY = nextPositionsY.direction;
+
+        if (this.state.speedY === 0 && this.state.positionY > 0) {
+            this.state.directionY = -1;
+        }
+
+        if (this.state.directionY === -1) {
+            this.state.speedY += 3;
+        }
+
+        if (this.state.positionY <= 0 && this.state.speedY < 80) {
+            this.state.boostY = 0;
+            this.state.speedY = 0;
+            this.state.positionY = 0;
+            this.state.directionY = 1;
+            if (this.state.pose === 'jump') {
+                this.setPose('landed');
+                setTimeout(() => {
+                    this.unsetPose('landed');
+                    this.unsetPose('jump');
+                },300);
+            }
+        }
+
+        if (this.state.speedY > 0) {
+            if (!this.state.pose) this.setPose('jump');
+        } else {
+            this.unsetPose('jump');
+        }
+
+        elemHero.style.transform = `translate(${this.state.positionX}%, ${-this.state.positionY}%)`;
+        elemSkillet.style.transform = `scaleX(${this.state.direction})`;
+    });
 
     return this;
 }
