@@ -1,22 +1,18 @@
 .ui
 {
+    font-size: 0.7rem;
     &__icon
     {
         font-size: 1.2em;
         padding: 0.1em 0.2em;
         border: .1em solid #222;
         border-radius: 50%;
-        background: #dddddd;
+        background: #eee;
     }
 
     &__text
     {
         padding: .1em .2em;
-
-        border: .1em solid #222;
-        color: #000;
-        text-shadow: 0 0 0.5rem rgba(255, 255, 255, 1);
-        background: rgba(200, 200, 200, 0.5);
 
         white-space: nowrap;
         transition: transform 0.3s ease;
@@ -31,19 +27,33 @@
         justify-content: center;
         transition: transform 0.3s ease;
     }
-}
 
-.symbol
-{
-    width: 0.7em;
-    text-align: center;
-    &:first-child {
-        font-weight: bold;
-        transform: scale(1.5);
-    }
-    &_selected
+    &__symbol
     {
-        font-weight: bold;
-        transform: scale(2);
+        width: 1.3em;
+        height: 1.3em;
+        line-height: 1em;
+        text-align: center;
+        background: linear-gradient(to left, #fff, #ccc);
+        border: 0.15em solid;
+        border-top-color: #eee;
+        border-left-color: #ddd;
+        border-bottom-color: #bbb;
+        border-right-color: #aaa;
+        margin: 0 .05em;
+        color: #000;
+        text-transform: uppercase;
+        &:first-child {
+            font-weight: bold;
+            opacity: 1;
+            animation: pulse 2s ease infinite;
+        }
+
+        &_selected
+        {
+            font-weight: bold;
+            transform: scale(1.5);
+            opacity: 1;
+        }
     }
 }

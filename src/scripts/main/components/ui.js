@@ -5,7 +5,11 @@ function Ui () {
     this.makePhrase = (length) => {
         let result           = '';
         let characters       = 'abcdefghijklmnopqrstuvwxyz';
-        let charactersLength = characters.length;
+        // characters          += 'абвгдежзийклмнопрстуфхцчшщъыьэюя';
+        // characters          += '0123456789';
+        // characters          += '!@#$%^&*()_+[]{}\|;:\'"<>,.?/';
+
+        let charactersLength     = characters.length;
         for ( let i = 0; i < length; i++ ) {
             let newChar = characters.charAt(Math.floor(Math.random() * charactersLength));
             let skip = false;
@@ -34,15 +38,15 @@ function Ui () {
     }
 
     this.found = (key) => {
+        let actionPlayed = false;
         if (found < 0) {
             this.elements.map((uiElement, index) => {
                 if (uiElement.symbols[charCounter] === key) {
-                    uiElement.elemSymbols[charCounter].classList.remove('fadeIn');
                     uiElement.elemSymbols[charCounter].classList.add('fadeOutDown');
                     uiElement.elemText.style.transform = 'scale(1.5)';
                     found = index;
                 } else {
-                    uiElement.elem.style.opacity = '0';
+                    uiElement.elem.style.display = 'none';
                 }
             });
             charCounter++;
@@ -58,25 +62,29 @@ function Ui () {
 
         if (found >= 0 && this.elements[found].symbols.length === charCounter) {
             this.elements[found].setText(this.makePhrase(this.elements[found].text.length));
-            gameObjects.player1.runAction(this.elements[found].action , +this.elements[found].direction);
+            gameObjects.player.runAction(this.elements[found].action , +this.elements[found].direction);
             found = -1;
             charCounter = 0;
+            actionPlayed = true;
         } else if (found >= 0 ) {
-            this.elements[found].elemSymbols[charCounter].classList.add('symbol_selected');
+            this.elements[found].elemSymbols[charCounter].classList.add('ui__symbol_selected');
         }
 
         if (found < 0){
             this.elements.map((uiElement, index) => {
-                uiElement.elem.style.opacity = '1';
+                uiElement.elem.style.display = '';
                 uiElement.elemText.style.transform = '';
             });
             found = -1;
             charCounter = 0;
+
+            if (actionPlayed) return true;
+        } else {
+            return true;
         }
+
+        return false;
     };
-
-    return this;
-
 }
 
 
@@ -106,16 +114,22 @@ function UiElement (elem) {
     this.setText = (text) => {
         this.text = text;
         this.elemText.innerHTML = '';
+
+        let fadeClass = 'fadeIn';
+        let delay = 100;
         this.text.split('').map((symbol, index) => {
             let span = document.createElement('span');
             symbol = symbol === ' ' ? '&nbsp;' : symbol;
             this.symbols[index] = symbol;
             span.innerHTML = symbol;
-            span.className = 'symbol fadeIn';
+            span.className = 'ui__symbol ' + fadeClass;
             span.style.display = 'inline-block';
-            span.style.animationDelay = index * 100 + 'ms';
+            span.style.animationDelay = index * delay + 'ms';
             this.elemSymbols[index] = span;
             this.elemText.appendChild(span);
+            setTimeout(() => {
+                span.classList.remove(fadeClass);
+            }, (index + 1) * delay);
         });
     };
 

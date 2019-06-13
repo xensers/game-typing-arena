@@ -13,8 +13,8 @@
 
 .fadeIn
 {
-    animation: fadeIn 0.5s ease-in-out;
-    animation-fill-mode: backwards;
+    animation: fadeIn 0.5s ease-in-out !important;
+    animation-fill-mode: backwards !important;
 }
 
 @keyframes fadeOut
@@ -32,8 +32,8 @@
 
 .fadeOut
 {
-    animation: fadeOut 0.5s ease-in-out;
-    animation-fill-mode: forwards;
+    animation: fadeOut 0.5s ease-in-out !important;
+    animation-fill-mode: forwards !important;
 }
 
 
@@ -53,8 +53,8 @@
 
 .fadeInUp
 {
-    animation: fadeInUp 0.5s ease-in-out;
-    animation-fill-mode: backwards;
+    animation: fadeInUp 0.5s ease-in-out !important;
+    animation-fill-mode: backwards !important;
 }
 
 @keyframes fadeOutUp {
@@ -73,8 +73,8 @@
 
 .fadeOutUp
 {
-    animation: fadeOutUp 0.5s ease-in-out;
-    animation-fill-mode: forwards;
+    animation: fadeOutUp 0.5s ease-in-out !important;
+    animation-fill-mode: forwards !important;
 }
 
 @keyframes fadeInDown {
@@ -93,8 +93,8 @@
 
 .fadeInDown
 {
-    animation: fadeInDown 0.5s ease-in-out;
-    animation-fill-mode: backwards;
+    animation: fadeInDown 0.5s ease-in-out !important;
+    animation-fill-mode: backwards !important;
 }
 
 @keyframes fadeOutDown {
@@ -113,8 +113,8 @@
 
 .fadeOutDown
 {
-    animation: fadeOutDown 0.5s ease-in-out;
-    animation-fill-mode: forwards;
+    animation: fadeOutDown 0.5s ease-in-out !important;
+    animation-fill-mode: forwards !important;
 }
 
 @keyframes fadeInLeft {
@@ -133,8 +133,8 @@
 
 .fadeInLeft
 {
-    animation: fadeInLeft 0.5s ease-in-out;
-    animation-fill-mode: backwards;
+    animation: fadeInLeft 0.5s ease-in-out !important;
+    animation-fill-mode: backwards !important;
 }
 
 @keyframes fadeOutLeft {
@@ -153,8 +153,8 @@
 
 .fadeOutLeft
 {
-    animation: fadeOutLeft 0.5s ease-in-out;
-    animation-fill-mode: forwards;
+    animation: fadeOutLeft 0.5s ease-in-out !important;
+    animation-fill-mode: forwards !important;
 }
 
 @keyframes fadeInRight {
@@ -173,8 +173,8 @@
 
 .fadeInRight
 {
-    animation: fadeInRight 0.5s ease-in-out;
-    animation-fill-mode: backwards;
+    animation: fadeInRight 0.5s ease-in-out !important;
+    animation-fill-mode: backwards !important;
 }
 
 @keyframes fadeOutRight {
@@ -193,6 +193,21 @@
 
 .fadeOutRight
 {
-    animation: fadeOutRight 0.5s ease-in-out;
-    animation-fill-mode: forwards;
+    animation: fadeOutRight 0.5s ease-in-out !important;
+    animation-fill-mode: forwards !important;
+}
+
+@keyframes pulse {
+    0%
+    {
+        transform: scale(1);
+    }
+    50%
+    {
+        transform: scale(1.5);
+    }
+    100%
+    {
+        transform: scale(1);
+    }
 }
