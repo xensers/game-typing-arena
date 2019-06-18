@@ -1,0 +1,31 @@
+.hero
+{
+  &_dead &__skillet
+  {
+    transform: rotate(-90deg) translateX(-40%) translateY(0%);
+  }
+
+  &_dead &__head
+  {
+    transform: rotate(15deg);
+
+    &:before
+    {
+      background-position: -3.6rem 0;
+    }
+  }
+
+  &_dead &__arm_right
+  {
+    transform: rotate(60deg);
+  }
+
+  &_dead &__arm_left
+  {
+    transform: rotate(-160deg);
+  }
+
+  &_dead &__leg {
+    transform: rotate(-25deg);
+  }
+}

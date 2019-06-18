@@ -1,10 +1,18 @@
 function Hero(elemHero) {
     const activeActions = [];
-    const elemSkillet = elemHero.querySelector('.hero__skillet')
+    const elemDirection = elemHero.querySelector('.hero__direction');
+    const elemUi = elemHero.querySelector('.ui');
+
+
+    const elemUiHealth = document.createElement('div');
+    elemUiHealth.className = 'hero__health';
+    elemHero.appendChild(elemUiHealth);
 
     this.state = {
         action: false,
         nextAction: false,
+        health: 100,
+        damage: 0,
         pose: null,
         direction: 1,
         directionY: 1,
@@ -52,6 +60,7 @@ function Hero(elemHero) {
     };
 
     this.runAction = (actionName, direction) => {
+        if (this.state.health <= 0 || animationsLoop.paused) return this;
         if (direction === 1 || direction === -1) {
             if (direction !== this.state.direction) {
                 this.state.direction = direction;
@@ -144,13 +153,18 @@ function Hero(elemHero) {
                 name: 'takeDamageStart',
                 duration: 300,
                 action: () => {
+                    console.log('takeDamageStart');
                     this.setPose('damage');
+                    this.state.health -= this.state.damage;
+                    this.state.damage = 0;
                 }
             },
             {
                 name: 'takeDamageEnd',
                 action: () => {
+                    console.log('takeDamageEnd');
                     this.unsetPose('damage');
+                    if (this.state.health <= 0) setTimeout(setDefault, 3000);
                 }
             }
         ],
@@ -175,7 +189,6 @@ function Hero(elemHero) {
                           let distanceY = gameObjects[key].state.positionY - this.state.positionY;
 
                           if (Math.abs(distance) <= 200 && Math.abs(distanceY) < 100) {
-
                               if (!changedDirection) {
                                   if (distance > 0) {
                                       this.state.direction = 1;
@@ -190,7 +203,7 @@ function Hero(elemHero) {
                               if (this.state.direction + gameObjects[key].state.direction === 0
                                   && distance * this.state.direction > 0) {
                                   gameObjects[key].state.speedX = -50;
-                                  gameObjects[key].runAction('damage');
+                                  gameObjects[key].state.damage += 10;
                               }
 
                           }
@@ -215,6 +228,28 @@ function Hero(elemHero) {
             this.state.direction,
             arena.xMax,
             arena.xMin);
+
+        if (this.state.damage > 0) {
+            this.runAction('damage');
+        }
+
+        if (this.state.health <= 0) {
+            this.state.health = 0;
+            elemUiHealth.style.color = '#222';
+            this.setPose('dead');
+            elemUi.style.display = 'none';
+        } else {
+            this.unsetPose('dead');
+             elemUi.style.display = '';
+        }
+
+        if (this.state.health > 0 && this.state.health <= 30) {
+            elemUiHealth.style.color = '#f00';
+        } else if (this.state.health > 30 &&  this.state.health <= 60) {
+            elemUiHealth.style.color = '#ff0';
+        } else if (this.state.health > 60) {
+            elemUiHealth.style.color = '#0f0';
+        }
 
         this.state.positionX = nextPositionsX.position;
         this.state.boostX = nextPositionsX.boost;
@@ -263,7 +298,8 @@ function Hero(elemHero) {
         }
 
         elemHero.style.transform = `translate(${this.state.positionX}%, ${-this.state.positionY}%)`;
-        elemSkillet.style.transform = `scaleX(${this.state.direction})`;
+        elemDirection.style.transform = `scaleX(${this.state.direction})`;
+        elemUiHealth.innerText = this.state.health;
     });
 
     return this;

@@ -9,6 +9,13 @@
     width: 4.5rem;
     height: 6.5rem;
 
+    &__health {
+        position: relative;
+        left: -1rem;
+        z-index: 900;
+        font-size: 0.8rem;
+    }
+
     .ui
     {
         position: absolute;
@@ -61,6 +68,20 @@
                 transform: translate(-50%, 20%);
             }
         }
+    }
+
+    &__skillet, &__direction {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__skillet
+    {
+        transition: .2s transform linear;
     }
 
     &__skillet *
