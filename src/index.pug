@@ -1,8 +1,16 @@
 extends pug/base
 
 block header
-    h3 Some Header
-    #framerate
+    +b.scoreboard
+        +e.player
+            +e.title#playerName Player
+            +e.score#playerScore 0
+        +e.raund
+            +e.title Raund
+            +e.score#raund 1
+        +e.player
+            +e.title#enemyName Enemy
+            +e.score#enemyScore 0
 
 block content
 
@@ -54,4 +62,3 @@ block content
 
 
 block footer
-    h3 Some Footer

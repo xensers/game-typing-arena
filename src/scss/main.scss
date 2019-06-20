@@ -13,3 +13,45 @@
 @import "common/keyframes";
 @import "common/helpers";
 
+.scoreboard
+{
+  display: flex;
+  justify-content: space-between;
+
+  margin: 0.5rem auto;
+  padding: 0.5rem;
+
+  width: 12rem;
+
+  text-align: center;
+  font-size: 0.8rem;
+
+  border: 0.1rem solid #fff;
+  background-color: #222;
+  
+  &__player
+  {
+    padding: 0.2rem;
+    border: 0.06rem solid #fff;
+    border-radius: 0.2rem;
+  }
+
+  &__raund
+  {
+    padding: 0.2rem;
+    border: 0.06rem solid #fff;
+    border-radius: 0.2rem;
+  }
+
+  &__score
+  {
+    background: #000;
+    color: #F44;
+  }
+
+  &__title
+  {
+    font-size: 0.6rem;
+    margin-bottom: 0.2rem;
+  }
+}

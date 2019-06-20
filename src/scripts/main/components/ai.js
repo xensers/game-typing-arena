@@ -1,5 +1,30 @@
 function AI(hero) {
-    setInterval(() => {
+    this.time = 1600;
+    this.interval = setInterval(this.action, this.time);
+
+    this.setTime = (time) => {
+
+        clearInterval(this.interval);
+
+        this.time = time > 400 ? time : 400;
+        if (this.time < 800) {
+            hero.setSkin('man');
+        } else if (this.time < 1000 && this.time >= 800) {
+            hero.setSkin('niga');
+        } else if (this.time < 1400 && this.time >= 1000) {
+            hero.setSkin('boy');
+        } else if (this.time < 1800 && this.time >= 1400) {
+            hero.setSkin('girl');
+        } else {
+            hero.setSkin('zombie');
+        }
+
+        this.interval = setInterval(this.action, this.time);
+
+        return this;
+    }
+
+    this.action = () => {
         let i;
         for (var key in gameObjects) {
             if (gameObjects[key] !== hero) {
@@ -18,7 +43,7 @@ function AI(hero) {
                 }
             }
         }
-    }, 1200);
+    }
 
 
     const switchAction = (index) => {

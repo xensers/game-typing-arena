@@ -153,7 +153,6 @@ function Hero(elemHero) {
                 name: 'takeDamageStart',
                 duration: 300,
                 action: () => {
-                    console.log('takeDamageStart');
                     this.setPose('damage');
                     this.state.health -= this.state.damage;
                     this.state.damage = 0;
@@ -162,7 +161,6 @@ function Hero(elemHero) {
             {
                 name: 'takeDamageEnd',
                 action: () => {
-                    console.log('takeDamageEnd');
                     this.unsetPose('damage');
                     if (this.state.health <= 0) setTimeout(setDefault, 3000);
                 }

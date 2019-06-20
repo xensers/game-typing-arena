@@ -8,8 +8,6 @@ const config = {
 
 const ui = new Ui();
 
-
-
 const animationsLoop = new AnimationsLoop();
 animationsLoop.play();
 
@@ -22,27 +20,45 @@ const arena =  {
     yMax: 300
 };
 
+raund.innerText = -1;
+playerScore.innerText = -1;
+enemyScore.innerText  = -1;
+
 const elemPlayer = document.querySelector('#player .hero');
 gameObjects.player = new Hero(elemPlayer);
 const elemEnemy = document.querySelector('#enemy .hero');
 gameObjects.enemy = new Hero(elemEnemy);
 
+const ai = new AI(gameObjects.enemy);
+
 const setDefault = () => {
+    raund.innerText = +raund.innerText + 1;
+
+    if (gameObjects.player.state.health > 0) {
+      playerScore.innerText = +playerScore.innerText + 1;
+    }
+
+    if (gameObjects.enemy.state.health > 0) {
+      enemyScore.innerText = +enemyScore.innerText + 1;
+    }
+
     gameObjects.player.setSkin('man');
     gameObjects.player.state.health = 100;
     gameObjects.player.state.positionY = 0;
     gameObjects.player.state.positionX = 100;
-    gameObjects.enemy.state.direction = 1;
+    gameObjects.player.state.direction = 1;
 
     gameObjects.enemy.setSkin('niga');
     gameObjects.enemy.state.health = 100;
     gameObjects.enemy.state.positionY = 0;
     gameObjects.enemy.state.positionX = 800;
     gameObjects.enemy.state.direction = -1;
+
+
+    let time = 2000 - (+playerScore.innerText - enemyScore.innerText) * 200;
+    ai.setTime(time);
 };
 setDefault();
-
-AI(gameObjects.enemy);
 
 
 // let soundClick = new Audio();
